@@ -1,0 +1,40 @@
+
+
+
+<table class="table table-bordered table-hover">
+ 
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Title</th>
+            <th scope="col">Content</th>
+            <th scope="col">Image</th>
+            <th scope="col">Category Name</th>
+            <th scope="col">Created At</th>
+            <th scope="col">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+    {{#news}}
+        <tr>
+            
+            <th scope="row">{{i}}</th>
+            <td>{{title}}</td>
+            <td >{{subcontent}}</td>
+            <td><img src="{{image}}" alt="{{title}} image" width="100" height="70" class="thumbnail" ></td>
+            <td>{{category_name}}</td>
+            <td>{{timecreated}}</td>
+            <td>
+                {{! show action }}
+                <a href="/moodle/local/news/show.php?&id={{id}}" ><i class="fa fa-eye fa-2x " title="show"></i></a>
+                {{! edit action }}
+                <a href="/moodle/local/news/edit_news.php?id={{id}}&title={{title}}&content={{content}}" class="text-warning"><i class="fa fa-edit fa-2x " title="edit"></i></a>
+                {{! delete action }}
+                <a href="/moodle/local/news/index.php?action=del&sesskey={{sesskey}}&id={{id}}" class="text-danger"><i class="fa fa-trash fa-2x " title="delete"></i></a>
+            </td>
+        </tr>
+    {{/news}}
+    </tbody>
+</table>
+
+

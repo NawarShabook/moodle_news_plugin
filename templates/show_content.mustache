@@ -1,0 +1,31 @@
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <div class="jumbotron">
+                <h1 class="display-4">News</h1>
+                <a class="btn btn-success" href="/moodle/local/news/index.php">All New</a>
+                </div>
+            </div>
+        </div>
+    {{#news}}
+    <div class="row">
+        <div class="col">
+            <div class="card" style="width: 18rem;">
+               
+                <img class="card-img-top" src="{{image}}" alt="">
+                <div class="card-body">
+                    <h5 class="card-title">{{title}}</h5>
+                    <p class="card-text">{{content}}</p>
+                    <p class="card-text"> {{timecreated}}</p>
+
+                {{! edit action }}
+                <a href="/moodle/local/news/edit_news.php?id={{id}}&title={{title}}&content={{content}}"><i class="fa fa-edit fa-2x " title="edit"></i></a>
+                {{! delete action }}
+                <a href="/moodle/local/news/index.php?action=del&sesskey={{sesskey}}&id={{id}}" class="text-danger"><i class="fa fa-trash fa-2x " title="delete"></i></a>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    {{/news}}
+</div>
