@@ -22,7 +22,12 @@
             <td>{{title}}</td>
             <td >{{subcontent}}</td>
             <td><img src="{{image}}" alt="{{title}} image" width="100" height="70" class="thumbnail" ></td>
-            <td>{{category_name}}</td>
+            <td>
+                <a href="/moodle/local/news/index.php?action=filter&filt='{{parent_category_name}}'">{{parent_category_name}}</a>
+                /
+                <a href="/moodle/local/news/index.php?action=filter&filt='{{category_name}}'">{{category_name}}</a>
+                
+            </td>
             <td>{{timecreated}}</td>
             <td>
                 {{! show action }}

@@ -42,7 +42,7 @@ $sql = "SELECT m.id, m.title,m.content, m.timecreated, m.categoryid,m.image, u.c
               
 $news = $DB->get_record_sql($sql);
 
-$news->timecreated=userdate($article->timecreated);
+$news->timecreated=userdate($news->timecreated);
 $action = optional_param('action', '', PARAM_TEXT);
 
 
