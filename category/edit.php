@@ -26,71 +26,59 @@ global $PAGE;
 global $SITE;
 global $OUTPUT;
 global $DB;
-require_once('../../config.php');
+require_once('../../../config.php');
 //require_once($CFG->dirroot . '/local/greetings/lib.php');
-require_once($CFG->dirroot . '/local/news/news_form.php');
+require_once($CFG->dirroot . '/local/news/category/category_form.php');
 
 $context = context_system::instance();
 $PAGE->set_context($context);
-$PAGE->set_url(new moodle_url('/local/news/create_news.php'));
+$PAGE->set_url(new moodle_url('/local/news/create_category.php'));
 $PAGE->set_pagelayout('standard');
 $PAGE->set_title($SITE->fullname);
-$PAGE->set_heading("Edit News");
+$PAGE->set_heading(get_string('category', 'local_news'));
 
 require_login();
 if (isguestuser()) {
     throw new moodle_exception('noguest');
 }
 
+
 //$action= optional_param('action','', PARAM_TEXT);
 
+$id = required_param('id',PARAM_INT);
 
+$category_name = optional_param('category_name', '',PARAM_TEXT);
+$parent_category_name = optional_param('parent_category_name','',PARAM_TEXT);
 
-$idnews = required_param('id',PARAM_INT);
-$titlenews = optional_param('title', '',PARAM_TEXT);
-$contentnews = optional_param('content','', PARAM_TEXT);
-$selectedcategory = optional_param('categoryid','',PARAM_TEXT);
+// $sql="SELECT m.id from {local_news_categories} as m where category_name=$parent_category_name";
 
-$classform=new local_news_form();
-$classform->getMyObject()->setDefault('newstitle',$titlenews);
-$classform->getMyObject()->setDefault('newscontent',$contentnews);
-$classform->getMyObject()->setDefault('selectedcategory',$selectedcategory);
-$classform->getMyObject()->setDefault('id',$idnews);
+$parent_id = $DB->get_record('local_news_categories', ['category_name'=>$parent_category_name])->id;
+
+$classform=new local_news_category_form();
+$classform->getMyObject()->setDefault('namecategory',$category_name);
+$classform->getMyObject()->setDefault('selectedcategory',$parent_id);
+$classform->getMyObject()->setDefault('id',$id);
 
 if($data = $classform->get_data()) {
 //    require_capability('local/greetings:postmessages', $context);
-//    $idnews = required_param('id', PARAM_INT);
-    $titlenews1 = required_param('newstitle', PARAM_TEXT);
-    $contentnews1 = required_param('newscontent', PARAM_TEXT);
+
+    $category_name1 = required_param('namecategory', PARAM_TEXT);
     $selectedcategory1 = required_param('selectedcategory', PARAM_TEXT);
 //    $id = required_param('id', PARAM_TEXT);
 
-    if (!empty($titlenews1) && !empty($contentnews1) && !empty($selectedcategory1)) {
+    if (!empty($category_name1) && !empty($selectedcategory1)) {
 
         $record = new stdClass;
-        $record->id = $idnews;
-        $record->title = $titlenews1;
-        $record->content = $contentnews1;
-        $record->categoryid = $selectedcategory1;
-
+        $record->id = $id;
+        $record->category_name = $category_name1;
+        $record->parent_id = $selectedcategory1;
         $record->timecreated = time();
 
-        $DB->update_record('local_news', $record);
+        $DB->update_record('local_news_categories', $record);
 
     }
 }
 
-
-
-
 echo $OUTPUT->header();
-echo html_writer::link(new moodle_url('/local/news/category/index.php'), 'Manage Categories', array('class' => 'btn btn-primary mb-4'));
-echo html_writer::link(new moodle_url('/local/news/index.php'), 'All News', array('class' => 'btn btn-primary ml-2 mb-4'));
-
 $classform->display();
-
-//print($idnews);
-//print( $classform->get_data());
-echo $idnews;
-echo $titlenews;
 echo $OUTPUT->footer();

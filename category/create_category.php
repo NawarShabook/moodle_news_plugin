@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>;.
 
 /**
- * @package     local_greetings
+ * @package     local_news
  * @copyright   2023 Nawar Shabook <nawarshabook@gmail.com>
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -26,9 +26,9 @@ global $PAGE;
 global $SITE;
 global $OUTPUT;
 global $DB;
-require_once('../../config.php');
+require_once('../../../config.php');
 //require_once($CFG->dirroot . '/local/greetings/lib.php');
-require_once($CFG->dirroot . '/local/news/category_form.php');
+require_once($CFG->dirroot . '/local/news/category/category_form.php');
 
 
 $context = context_system::instance();
@@ -37,6 +37,13 @@ $PAGE->set_url(new moodle_url('/local/news/create_category.php'));
 $PAGE->set_pagelayout('standard');
 $PAGE->set_title($SITE->fullname);
 $PAGE->set_heading(get_string('pluginname', 'local_news'));
+
+require_login();
+if (isguestuser()) {
+    throw new moodle_exception('noguest');
+}
+
+
 $categoryform = new local_news_category_form();
 if($data = $categoryform->get_data()) {
 //    require_capability('local/greetings:postmessages', $context);
@@ -54,7 +61,9 @@ if($data = $categoryform->get_data()) {
     }
 
 echo $OUTPUT->header();
-echo html_writer::link(new moodle_url('/local/news/create_category.php'), 'Create Category', array('class' => 'btn btn-primary'));
+
+echo html_writer::link(new moodle_url('/local/news/category/index.php'), 'Manage Categories', array('class' => 'btn btn-primary'));
+echo html_writer::link(new moodle_url('/local/news/category/create_category.php'), 'Create Category', array('class' => 'btn btn-primary'));
 echo html_writer::link(new moodle_url('/local/news/create_news.php'), 'Create News', array('class' => 'btn btn-primary'));
 $categoryform->display();
 

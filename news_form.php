@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>;.
 
 /**
- * @package     local_greetings
+ * @package     local_news
  * @copyright   2023 Nawar Shabook <nawarshabook@gmail.com>
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */

@@ -3,7 +3,7 @@
         <div class="col">
             <div class="jumbotron">
                 <h1 class="display-4">News</h1>
-                <a class="btn btn-success" href="/moodle/local/news/index.php">All New</a>
+                <a class="btn btn-success" href="/moodle/local/news/index.php">All News</a>
                 </div>
             </div>
         </div>
@@ -17,7 +17,12 @@
                     <h5 class="card-title">{{title}}</h5>
                     <p class="card-text">{{content}}</p>
                     <p class="card-text"> {{timecreated}}</p>
-
+                    <div>
+                        <a href="/moodle/local/news/index.php?action=filter&filt='{{parent_category_name}}'">{{parent_category_name}}</a>
+                        /
+                        <a href="/moodle/local/news/index.php?action=filter&filt='{{category_name}}'">{{category_name}}</a>
+                    </div>
+                    <br>
                 {{! edit action }}
                 <a href="/moodle/local/news/edit_news.php?id={{id}}&title={{title}}&content={{content}}"><i class="fa fa-edit fa-2x " title="edit"></i></a>
                 {{! delete action }}

@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>;.
 
 /**
- * @package     local_greetings
+ * @package     local_news
  * @copyright   2023 Nawar Shabook <nawarshabook@gmail.com>
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -28,13 +28,18 @@ defined('MOODLE_INTERNAL') || die();
  * @param navigation_node $frontpage Node representing the front page in the navigation tree.
  */
 function local_news_extend_navigation_frontpage(navigation_node $frontpage) {
-    global $OUTPUT;
-    $frontpage->add(
-        $OUTPUT->pix_icon('t/message', '').get_string('pluginname', 'local_news'),
-        new moodle_url('/local/news/index.php'),
-        navigation_node::TYPE_CUSTOM,
-        null,
-        null,
-        new pix_icon('t/message', '')
-    );
+
+   
+    if(isloggedin())
+    {
+        global $OUTPUT;
+        $frontpage->add(
+            $OUTPUT->pix_icon('t/message', '').get_string('pluginname', 'local_news'),
+            new moodle_url('/local/news/index.php'),
+            navigation_node::TYPE_CUSTOM,
+            null,
+            null,
+            new pix_icon('t/message', '')
+        );
+    }   
 }

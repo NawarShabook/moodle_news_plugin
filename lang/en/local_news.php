@@ -17,7 +17,7 @@
 /**
  * Plugin strings are defined here.
  *
- * @package     local_greetings
+ * @package     local_news
  * @category    string
  * @copyright   2023 Nawar Shabook <nawarshabook@gmail.com>
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -33,3 +33,11 @@ $string['head_list_news']="News List";
 $string['image']="Upload The News Image";
 $string['listcategory']="Select The News Category";
 $string['listparentcategory']="Select The Parent Category";
+$string['category']="category";
+$string['head_list_categories']="Categories List";
+
+
+$string['news:createcategory'] = 'create a new category and add it to the Categories wall';
+$string['news:createnews'] = 'create a new news and add it to the News wall';
+$string['news:viewcategory'] = 'View category on the News wall';
+$string['news:viewnews'] = 'View news on the News wall';

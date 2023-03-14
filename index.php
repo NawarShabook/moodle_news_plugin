@@ -35,6 +35,11 @@ $PAGE->set_pagelayout('standard');
 $PAGE->set_title($SITE->fullname.'.'.get_string('pluginname', 'local_news'));
 $PAGE->set_heading(get_string('head_list_news', 'local_news'));
 
+require_login();
+if (isguestuser()) {
+    throw new moodle_exception('noguest');
+}
+
 //$sql = "SELECT m.id, m.title,m.content, m.timecreated, m.categoryid
 //              FROM {local_news} m
 //         LEFT JOIN {local_news_categories } u ON u.id = m.categoryid
@@ -48,14 +53,14 @@ if($action=='filter')
     $cat = $DB->get_record_sql($sql);
     
 
-    $sql = " SELECT m.id, m.title,m.content, m.timecreated, m.categoryid,m.image, u.category_name, u.parent_id
+    $sql = " SELECT m.id, m.title,m.content, m.timecreated, m.categoryid,m.image, u.category_name, u.parent_id as cat_parent_id
               FROM mdl_local_news_categories u LEFT JOIN mdl_local_news m
               ON u.id = m.categoryid where  u.id=$cat->id or u.parent_id=$cat->id and m.id IS NOT NULL  ORDER BY timecreated DESC;";
     
 }
 else
 {
-        $sql = "SELECT m.id, m.title,m.content, m.timecreated, m.categoryid,m.image, u.category_name
+        $sql = "SELECT m.id, m.title,m.content, m.timecreated, m.categoryid,m.image, u.category_name, u.parent_id as cat_parent_id
               FROM {local_news} m  LEFT JOIN {local_news_categories} u 
               ON u.id = m.categoryid ORDER BY timecreated DESC";
               $news = $DB->get_records_sql($sql);
@@ -86,8 +91,8 @@ if ($action == 'del') {
 }
 
 echo $OUTPUT->header();
-echo html_writer::link(new moodle_url('/local/news/create_category.php'), 'Create Category', array('class' => 'btn btn-primary'));
-echo html_writer::link(new moodle_url('/local/news/create_news.php'), 'Create News', array('class' => 'btn btn-primary'));
+echo html_writer::link(new moodle_url('/local/news/category/index.php'), 'Manage Categories', array('class' => 'btn btn-primary mb-4'));
+echo html_writer::link(new moodle_url('/local/news/create_news.php'), 'Create News', array('class' => 'btn btn-primary ml-2 mb-4'));
 //print_r($messages);
 
 $i=1;
@@ -96,15 +101,12 @@ $news_array = array();
             //countre
             $article->i=$i++;
 
-            //select parent category
-            $sql = "SELECT *FROM {local_news_categories} m where m.id=$article->categoryid";
-            $cat=$DB->get_record_sql($sql);
-      
-            if($cat->parent_id != 0)
+            //if this category has parent
+            if($article->cat_parent_id != 0)
             {
                 
                 $sql = "SELECT m.category_name, m.id
-                FROM {local_news_categories} m where m.id=$cat->parent_id ";
+                FROM {local_news_categories} m where m.id=$article->cat_parent_id ";
                 $parent_name=$DB->get_record_sql($sql);
                 // $article->category_name=$parent_name->category_name.'/'.$article->category_name;
                 $article->parent_category_name=$parent_name->category_name;
@@ -180,6 +182,4 @@ foreach ($news as $m) {
     echo html_writer::end_tag('div');
 }
 */
-
-print_r($news);
 echo $OUTPUT->footer();

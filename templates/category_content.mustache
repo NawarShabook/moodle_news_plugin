@@ -1,0 +1,38 @@
+
+
+
+<table class="table table-bordered table-hover">
+ 
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Category Name</th>
+            <th scope="col">Created At</th>
+            <th scope="col">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+    {{#categories}}
+        <tr>
+            
+            <th scope="row">{{i}}</th>
+            <td>
+                {{parent_category_name}}
+                /
+               {{category_name}}
+                
+            </td>
+            <td>{{timecreated}}</td>
+            <td>
+            
+                {{! edit action }}
+                <a href="/moodle/local/news/category/edit.php?id={{id}}&category_name={{category_name}}&parent_category_name={{parent_category_name}}" class="text-warning"><i class="fa fa-edit fa-2x " title="edit"></i></a>
+                {{! delete action }}
+                <a href="/moodle/local/news/category/index.php?action=del&sesskey={{sesskey}}&id={{id}}" class="text-danger"><i class="fa fa-trash fa-2x " title="delete"></i></a>
+            </td>
+        </tr>
+    {{/categories}}
+    </tbody>
+</table>
+
+

@@ -24,7 +24,7 @@ defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'local_news';
 $plugin->release = '0.1.0';
-$plugin->version = 2023030901;
+$plugin->version = 2023031401;
 $plugin->requires = 2021051700;
 $plugin->maturity = MATURITY_ALPHA;
 // php admin/cli/uninstall_plugins.php --plugins=local_news --run

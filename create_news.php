@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>;.
 
 /**
- * @package     local_greetings
+ * @package     local_news
  * @copyright   2023 Nawar Shabook <nawarshabook@gmail.com>
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -35,10 +35,19 @@ $PAGE->set_context($context);
 $PAGE->set_url(new moodle_url('/local/news/create_news.php'));
 $PAGE->set_pagelayout('standard');
 $PAGE->set_title($SITE->fullname);
-$PAGE->set_heading(get_string('pluginname', 'local_news'));
+$PAGE->set_heading("Create News");
+require_login();
+if (isguestuser()) {
+    throw new moodle_exception('noguest');
+}
+
+$allow_create_news = has_capability('local/news:createnews', $context);
+
+if(!$allow_create_news)
+{
+    throw new moodle_exception('you dont have permession');
+}
 $newsform = new local_news_form();
-
-
 
 
 if($data = $newsform->get_data()) {
@@ -70,9 +79,8 @@ if($data = $newsform->get_data()) {
 
 echo $OUTPUT->header();
 
-echo html_writer::link(new moodle_url('/local/news/index.php'), 'All News', array('class' => 'btn btn-primary'));
-echo html_writer::link(new moodle_url('/local/news/create_category.php'), 'Create Category', array('class' => 'btn btn-primary'));
-echo html_writer::link(new moodle_url('/local/news/create_news.php'), 'Create News', array('class' => 'btn btn-primary'));
+echo html_writer::link(new moodle_url('/local/news/index.php'), 'All News', array('class' => 'btn btn-primary mb-4'));
+echo html_writer::link(new moodle_url('/local/news/category/index.php'), 'Manage Categories', array('class' => 'btn btn-primary ml-2 mb-4'));
 echo html_writer::tag('br','');
 $newsform->display();
 

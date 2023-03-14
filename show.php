@@ -36,19 +36,27 @@ $PAGE->set_title($SITE->fullname.'.'.get_string('pluginname', 'local_news'));
 $PAGE->set_heading(get_string('head_list_news', 'local_news'));
 
 $id = required_param('id', PARAM_TEXT);
-$sql = "SELECT m.id, m.title,m.content, m.timecreated, m.categoryid,m.image, u.category_name
+$sql = "SELECT m.id, m.title,m.content, m.timecreated, m.categoryid,m.image, u.category_name, u.parent_id as cat_parent_id
               FROM {local_news} m  LEFT JOIN {local_news_categories} u 
               ON u.id = m.categoryid where m.id=$id";
               
 $news = $DB->get_record_sql($sql);
 
 $news->timecreated=userdate($news->timecreated);
+if($news->cat_parent_id != 0)
+{
+    $sql = "SELECT m.category_name, m.id
+    FROM {local_news_categories} m where m.id=$news->cat_parent_id ";
+    $parent_name=$DB->get_record_sql($sql);
+    // $article->category_name=$parent_name->category_name.'/'.$article->category_name;
+    $news->parent_category_name=$parent_name->category_name;
+}
 $action = optional_param('action', '', PARAM_TEXT);
 
 
 echo $OUTPUT->header();
-echo html_writer::link(new moodle_url('/local/news/create_category.php'), 'Create Category', array('class' => 'btn btn-primary'));
-echo html_writer::link(new moodle_url('/local/news/create_news.php'), 'Create News', array('class' => 'btn btn-primary'));
+echo html_writer::link(new moodle_url('/local/news/category/index.php'), 'Manage Categories', array('class' => 'btn btn-primary mb-4'));
+
 
 
 $data = array('news' => $news, 'sesskey'=>sesskey());

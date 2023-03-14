@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>;.
 
 /**
- * @package     local_greetings
+ * @package     local_news
  * @copyright   2023 Nawar Shabook <nawarshabook@gmail.com>
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -32,12 +32,22 @@ class local_news_category_form extends moodleform {
     public function definition() {
         global $DB;
 
-        $mform    = $this->_form; // Don't forget the underscore!
+        $mform = $this->_form; // Don't forget the underscore!
+
+        $id=optional_param('id', '',PARAM_INT);
 
         $mform->addElement('textarea', 'namecategory', get_string('yourmessage', 'local_news')); // Add elements to your form.
         $mform->setType('namecategory', PARAM_TEXT); // Set type of element.
-
-        $records=$DB->get_records('local_news_categories', ['parent_id'=>'0']);
+        $mform->addElement("hidden",'id');
+        if($id)
+        {
+            $sql="SELECT* FROM {local_news_categories} m WHERE m.parent_id=0 and m.id!=$id";
+            $records=$DB->get_records_sql($sql);
+        }
+        else
+        {
+            $records=$DB->get_records('local_news_categories', ['parent_id'=>'0']);
+        }
         $categories=array(0=>'MAIN CATEGORY');
         foreach($records as $record)
         {
@@ -49,6 +59,10 @@ class local_news_category_form extends moodleform {
 
         $submitlabel = get_string('submit');
         $mform->addElement('submit', 'submitmessage', $submitlabel);
+
+    }
+    public function getMyObject(){
+        return $this->_form;
 
     }
 }
